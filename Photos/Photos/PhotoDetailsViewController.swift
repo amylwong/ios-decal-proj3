@@ -28,6 +28,8 @@ class PhotoDetailsViewController: UIViewController {
             let url = NSURL(string: photoDetail.url)
             let data = NSData(contentsOfURL: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check
             self.userPhoto.image = UIImage(data: data!)
+            userPhoto = UIImageView(frame:CGRectMake(0, 0, 100, 100))
+//            userPhoto.contentMode = .ScaleAspectFit
             self.likes.text = String(self.photoDetail.likes)
             self.username.text = self.photoDetail.username
             self.date.text = self.photoDetail.date
