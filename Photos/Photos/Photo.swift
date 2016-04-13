@@ -15,6 +15,7 @@ class Photo {
     var url : String!
     /* The username of the photographer. */
     var username : String!
+    var date : String!
 
     /* Parses a NSDictionary and creates a photo object. */
     init (data: NSDictionary) {
@@ -23,9 +24,7 @@ class Photo {
         self.likes = data.valueForKey("likes")!.valueForKey("count") as! Int
         self.url = data.valueForKey("images")!.valueForKey("standard_resolution")!.valueForKey("url") as! String
         self.username = data.valueForKey("user")!.valueForKey("username") as! String
-//        self.likes = 100000
-//        self.url = "http://0.soompi.io/wp-content/uploads/2016/03/23180713/song-joong-ki-yoo-si-jin.png"
-//        self.username = "big boss"
+        self.date = data.valueForKey("created_time") as! String
         print("Photo.swift")
     }
 }

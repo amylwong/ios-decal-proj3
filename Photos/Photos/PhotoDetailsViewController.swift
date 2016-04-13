@@ -24,10 +24,13 @@ class PhotoDetailsViewController: UIViewController {
         if let photoDetail = self.photoDetail{
             print("hi")
             print(photoDetail)
-//            self.userPhoto.image = UIImage(data: data!)
+            
+            let url = NSURL(string: photoDetail.url)
+            let data = NSData(contentsOfURL: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check
+            self.userPhoto.image = UIImage(data: data!)
             self.likes.text = String(self.photoDetail.likes)
             self.username.text = self.photoDetail.username
-//            self.date.text = photoDetail.date
+            self.date.text = self.photoDetail.date
         }
     }
     
