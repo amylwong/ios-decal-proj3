@@ -23,17 +23,22 @@ class InstagramAPI {
          *       d. Wait for completion of Photos array
          */
         // FILL ME IN
-        var url: NSURL
+        print("instagramAPI.swift")
+        let url: NSURL = Utils.getPopularURL()
 
-        let task = NSURLSession.sharedSession().dataTaskWithURL(url) {
+        let task = NSURLSession.sharedSession().dataTaskWithURL(url, completionHandler: {
             (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
             if error == nil {
                 //FIX ME
-                var photos: [Photo]!
+                var photos = [Photo]()
                 do {
                     let feedDictionary = try NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions.MutableContainers) as! NSDictionary
                     // FILL ME IN, REMEMBER TO USE FORCED DOWNCASTING
-                    
+                    let arr = feedDictionary.valueForKey("data") as! NSArray
+//                    print(feedDictionary)
+                    for dict in arr {
+                        photos.append(Photo(data: dict as! NSDictionary))
+                    }
                     
                     // DO NOT CHANGE BELOW
                     let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
@@ -45,8 +50,9 @@ class InstagramAPI {
                 } catch let error as NSError {
                     print("ERROR: \(error.localizedDescription)")
                 }
+                
             }
-        }
+        })
         task.resume()
     }
 }
