@@ -18,7 +18,6 @@ class PhotosCollectionViewController: UICollectionViewController {
         api.loadPhotos(didLoadPhotos)
         // FILL ME IN
         self.collectionView?.backgroundColor = UIColor.grayColor()
-        print("PhotosCollectionViewController viewDidLoad")
     }
 
     /* 
@@ -29,8 +28,6 @@ class PhotosCollectionViewController: UICollectionViewController {
     /* Creates a session from a photo's url to download data to instantiate a UIImage. 
        It then sets this as the imageView's image. */
     func loadImageForCell(photo: Photo, imageView: UIImageView) {
-        print("loadImageForCell")
-        // loadPhotos????
         let task = NSURLSession.sharedSession().dataTaskWithURL(NSURL(string: photo.url)!) {
             (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
             if error == nil {
@@ -41,13 +38,21 @@ class PhotosCollectionViewController: UICollectionViewController {
         
     }
     
-    // this fill cells with data
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        print("collectionView")
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier("PhotoCell", forIndexPath: indexPath) as! PhotoCell
         loadImageForCell(photos[indexPath.row], imageView: cell.photoImageView)
         return cell
     }
+//    
+//    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+//        self.performSegueWithIdentifier("toPhotoDetails", sender: indexPath)
+//    }
+//    
+//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+//        dispatch_async(dispatch_get_main_queue(), {
+//            self.performSegueWithIdentifier("homeToDetail", sender:self)
+//        })
+//    }
     
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
@@ -59,24 +64,20 @@ class PhotosCollectionViewController: UICollectionViewController {
         }
         return photos.count
     }
-
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if (segue.identifier == "toPhotoDetails") {
-//            let cell = view.superview as! PhotoCell
-
-           // let indexPath = itemTable.indexPathForCell(cell)
-//            let indexPath = self.indexPathForCell(cell)
+        if segue.identifier == "toPhotoDetails" {
             let destVC = segue.destinationViewController as! PhotoDetailsViewController
-//            destVC.photo = self.photo[indexPath.row]
-//            destVC.userPhoto = photos[indexPath.row]
-//            destVC.likes = photos[indexPath.row].likes
-            destVC.likes.text = "1000"
-        } else {
-            return
+//            let cell = sender as! UICollectionViewCell
+//            let indexPath = collectionView!.indexPathForCell(cell)
+            if let cell = sender as? UICollectionViewCell, indexPath = collectionView!.indexPathForCell(cell) {
+                destVC.photoDetail = photos[indexPath.row]
+            }
+//            destVC.photoDetail = photos[indexPath!.row]
         }
+
     }
-    
+
     
     /* Completion handler for API call. DO NOT CHANGE */
     func didLoadPhotos(photos: [Photo]) {
