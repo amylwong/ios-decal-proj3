@@ -14,31 +14,58 @@ class PhotoDetailsViewController: UIViewController {
     @IBOutlet weak var username: UILabel!
     @IBOutlet weak var date: UILabel!
     @IBOutlet weak var likes: UILabel!
-    @IBOutlet weak var likeButton: UIButton!
     var photoDetail: Photo!
+    
+    @IBOutlet weak var likeButton: UIButton!
+    var numLikes : Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("PhotoDetails:")
-//        print(photoDetail)
         if let photoDetail = self.photoDetail{
-            print("hi")
-            print(photoDetail)
-            
             let url = NSURL(string: photoDetail.url)
-            let data = NSData(contentsOfURL: url!) //make sure your image in this url does exist, otherwise unwrap in a if let check
+            let data = NSData(contentsOfURL: url!)
             self.userPhoto.image = UIImage(data: data!)
             userPhoto = UIImageView(frame:CGRectMake(0, 0, 100, 100))
-//            userPhoto.contentMode = .ScaleAspectFit
             self.likes.text = String(self.photoDetail.likes)
+            if photoDetail.liked {
+                likeButton.setTitle("♥", forState: .Normal)
+            } else {
+                likeButton.setTitle("♡", forState: .Normal)
+                
+            }
+            self.numLikes = self.photoDetail.likes
             self.username.text = self.photoDetail.username
-            self.date.text = self.photoDetail.date
+            self.date.text = parseDate(self.photoDetail.date)
+            setButton()
         }
+    }
+    
+    func setButton() {
+        likeButton.addTarget(self, action: "likeAction", forControlEvents: .TouchUpInside)
+    }
+    
+    func likeAction(){
+        photoDetail.liked = !photoDetail.liked
+        if photoDetail.liked {
+            likeButton.setTitle("♥", forState: .Normal)
+            self.likes.text = String(numLikes + 1)
+            self.photoDetail.likes = self.photoDetail.likes + 1
+        } else {
+            likeButton.setTitle("♡", forState: .Normal)
+            self.likes.text = String(numLikes)
+        }
+        
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
+    func parseDate(postDate: String) -> String {
+        let date = NSDate(timeIntervalSince1970: NSTimeInterval(Int(postDate)!))
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "EEEE, MMMM dd, yyyy"
+        return dateFormatter.stringFromDate(date)
+    }
 
 }

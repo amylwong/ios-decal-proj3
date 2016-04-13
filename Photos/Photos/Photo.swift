@@ -16,6 +16,7 @@ class Photo {
     /* The username of the photographer. */
     var username : String!
     var date : String!
+    var liked : Bool = false
 
     /* Parses a NSDictionary and creates a photo object. */
     init (data: NSDictionary) {
