@@ -42,6 +42,11 @@ class PhotoDetailsViewController: UIViewController {
     
     func setButton() {
         likeButton.addTarget(self, action: "likeAction", forControlEvents: .TouchUpInside)
+        likeButton.layer.cornerRadius = 0.5 * likeButton.bounds.size.width
+        likeButton.layer.borderColor = UIColor.redColor().CGColor as CGColorRef
+        likeButton.layer.borderWidth = 2.0
+        likeButton.clipsToBounds = true
+        likeButton.backgroundColor = UIColor.whiteColor()
     }
     
     func likeAction(){

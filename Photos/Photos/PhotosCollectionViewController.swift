@@ -17,7 +17,6 @@ class PhotosCollectionViewController: UICollectionViewController {
         let api = InstagramAPI()
         api.loadPhotos(didLoadPhotos)
         // FILL ME IN
-        self.collectionView?.backgroundColor = UIColor.grayColor()
     }
 
     /* 
@@ -43,17 +42,7 @@ class PhotosCollectionViewController: UICollectionViewController {
         loadImageForCell(photos[indexPath.row], imageView: cell.photoImageView)
         return cell
     }
-//    
-//    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-//        self.performSegueWithIdentifier("toPhotoDetails", sender: indexPath)
-//    }
-//    
-//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        dispatch_async(dispatch_get_main_queue(), {
-//            self.performSegueWithIdentifier("homeToDetail", sender:self)
-//        })
-//    }
-    
+
     override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -68,17 +57,13 @@ class PhotosCollectionViewController: UICollectionViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toPhotoDetails" {
             let destVC = segue.destinationViewController as! PhotoDetailsViewController
-//            let cell = sender as! UICollectionViewCell
-//            let indexPath = collectionView!.indexPathForCell(cell)
             if let cell = sender as? UICollectionViewCell, indexPath = collectionView!.indexPathForCell(cell) {
                 destVC.photoDetail = photos[indexPath.row]
             }
-//            destVC.photoDetail = photos[indexPath!.row]
         }
 
     }
 
-    
     /* Completion handler for API call. DO NOT CHANGE */
     func didLoadPhotos(photos: [Photo]) {
         self.photos = photos
